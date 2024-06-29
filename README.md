@@ -56,4 +56,4 @@ Executes a sequence of assembly language instructions and returns the final stat
 ## Postman Collection
 You can use the provided Postman collection to test the API endpoints. Import the collection into Postman to get started quickly.
 
-Download Postman Collection file ( Simple File Database.postman_collection )
+Download Postman Collection file ( Simple Assembly Language.postman_collection )
