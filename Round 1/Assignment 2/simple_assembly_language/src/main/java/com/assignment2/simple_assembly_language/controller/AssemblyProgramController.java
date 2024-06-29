@@ -21,4 +21,11 @@ public class AssemblyProgramController {
         AssemblyProgram assemblyProgram = service.executeAndSave(programText);
         return ResponseEntity.ok(assemblyProgram);
     }
+
+    @PostMapping("/statement")
+    public ResponseEntity<String> executeStatement(@RequestBody Map<String, String> request) {
+        String statement = request.get("statement");
+        String result = service.executeStatement(statement);
+        return ResponseEntity.ok(result);
+    }
 }

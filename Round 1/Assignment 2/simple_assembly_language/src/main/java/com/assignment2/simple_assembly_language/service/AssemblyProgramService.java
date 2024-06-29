@@ -15,62 +15,70 @@ public class AssemblyProgramService {
     @Autowired
     private AssemblyProgramRepository repository;
 
+    private final Map<String, Integer> registers = new HashMap<>();
+
+    public String executeStatement(String statement) {
+        return processInstruction(statement, registers);
+    }
+
     public AssemblyProgram executeAndSave(String programText) {
         String[] instructions = programText.split("\n");
-        Map<String, Integer> registers = new HashMap<>();
-
+        Map<String, Integer> localRegisters = new HashMap<>();
         StringBuilder resultBuilder = new StringBuilder();
 
         for (String instruction : instructions) {
             if (instruction.isEmpty()) {
                 continue;
             }
-            String[] parts = instruction.split("[ ,]+");
-            String command = parts[0];
-
-            switch (command) {
-                case "MV":
-                    String reg = parts[1];
-                    int value = Integer.parseInt(parts[2].replace("#", ""));
-                    registers.put(reg, value);
-                    break;
-
-                case "ADD":
-                    String reg1 = parts[1];
-                    if (parts[2].startsWith("#")) {
-                        int constValue = Integer.parseInt(parts[2].replace("#", ""));
-                        registers.put(reg1, registers.getOrDefault(reg1, 0) + constValue);
-                    } else {
-                        String reg2 = parts[2];
-                        registers.put(reg1, registers.getOrDefault(reg1, 0) + registers.getOrDefault(reg2, 0));
-                    }
-                    break;
-
-                case "SHOW":
-                    resultBuilder.append(showAllRegisters(registers));
-                    break;
-
-                default:
-                    resultBuilder.append("Unknown command: ").append(command).append("\n");
-                    break;
-            }
+            resultBuilder.append(processInstruction(instruction, localRegisters)).append("\n");
         }
 
         AssemblyProgram assemblyProgram = new AssemblyProgram();
         assemblyProgram.setProgramText(programText);
-        assemblyProgram.setResult(resultBuilder.toString());
+        assemblyProgram.setResult(showAllRegisters(localRegisters));
 
         return repository.save(assemblyProgram);
     }
 
+    private String processInstruction(String instruction, Map<String, Integer> registers) {
+        String[] parts = instruction.split("[ ,]+");
+        String command = parts[0];
+
+        switch (command) {
+            case "MV":
+                String reg = parts[1];
+                int value = Integer.parseInt(parts[2].replace("#", ""));
+                registers.put(reg, value);
+                return "Moved " + value + " to " + reg;
+
+            case "ADD":
+                String reg1 = parts[1];
+                if (parts[2].startsWith("#")) {
+                    int constValue = Integer.parseInt(parts[2].replace("#", ""));
+                    registers.put(reg1, registers.getOrDefault(reg1, 0) + constValue);
+                    return "Added " + constValue + " to " + reg1;
+                } else {
+                    String reg2 = parts[2];
+                    registers.put(reg1, registers.getOrDefault(reg1, 0) + registers.getOrDefault(reg2, 0));
+                    return "Added value of " + reg2 + " to " + reg1;
+                }
+
+            case "SHOW":
+                return showAllRegisters(registers);
+
+            case "CLEAR":
+                registers.clear();
+                return "Cleared all registers";
+
+            default:
+                return "Unknown command: " + command;
+        }
+    }
+
     private String showAllRegisters(Map<String, Integer> registers) {
-        StringBuilder resultBuilder = new StringBuilder();
-        String sortedRegisters = registers.entrySet().stream()
+        return registers.entrySet().stream()
                 .sorted(Map.Entry.comparingByKey())
                 .map(entry -> entry.getKey() + ": " + entry.getValue())
                 .collect(Collectors.joining("\n"));
-
-        resultBuilder.append(sortedRegisters).append("\n");
-        return resultBuilder.toString();
     }
 }

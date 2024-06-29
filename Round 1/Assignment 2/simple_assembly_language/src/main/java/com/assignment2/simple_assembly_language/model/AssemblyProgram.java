@@ -15,7 +15,4 @@ public class AssemblyProgram {
     private String programText;
     @Lob
     private String result;
-
 }
-
-
