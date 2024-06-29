@@ -1,0 +1,70 @@
+{
+	"info": {
+		"_postman_id": "04a1c692-d875-417d-9028-adf213c7726d",
+		"name": "Simple Assembly Language",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29784333"
+	},
+	"item": [
+		{
+			"name": "Execute",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"programText\": \"MV REG1,#3000\\nMV REG2,#3000\\nADD REG1,REG2\\nADD REG1,#600\\nSHOW REG\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/assembly/execute",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"assembly",
+						"execute"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Statement",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"statement\": \"ADD REG3,#500\"\r\n}\r\n\r\n// {\r\n//     \"statement\": \"ADD REG1,REG3\"\r\n// }\r\n\r\n// {\r\n//     \"statement\": \"SHOW REG\"\r\n// }\r\n\r\n// {\r\n//     \"statement\": \"SHOW PROGRAM\"\r\n// }\r\n\r\n// {\r\n//     \"statement\": \"CLEAR\"\r\n// }\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/assembly/statement",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"assembly",
+						"statement"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
