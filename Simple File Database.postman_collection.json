@@ -1,0 +1,70 @@
+{
+	"info": {
+		"_postman_id": "431d749f-fcc8-48fc-a013-76149261c9f7",
+		"name": "Simple File Database",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29784333"
+	},
+	"item": [
+		{
+			"name": "Create Table Copy",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"sql\": \"CREATE TABLE table2 (col1 INTEGER, col2 STRING, col3 STRING, col4 INTEGER)\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/sql/execute",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"sql",
+						"execute"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Insert Table Copy",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"sql\": \"INSERT INTO table1 (col1, col2, col3, col4) VALUES (1, 'value1',100,50)\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/sql/execute",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"sql",
+						"execute"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
