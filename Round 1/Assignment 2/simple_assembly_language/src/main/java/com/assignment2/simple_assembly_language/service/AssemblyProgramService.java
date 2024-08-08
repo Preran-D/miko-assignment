@@ -21,16 +21,37 @@ public class AssemblyProgramService {
         return processInstruction(statement, registers);
     }
 
-    public AssemblyProgram executeAndSave(String programText) {
+    public AssemblyProgram execute(String programText) {
         String[] instructions = programText.split("\n");
         Map<String, Integer> localRegisters = new HashMap<>();
         StringBuilder resultBuilder = new StringBuilder();
+
+        boolean ifConditionExecute = true;
 
         for (String instruction : instructions) {
             if (instruction.isEmpty()) {
                 continue;
             }
-            resultBuilder.append(processInstruction(instruction, localRegisters)).append("\n");
+
+            String[] parts = instruction.split("[ ,]+");
+            String command = parts[0];
+
+            if (command.equals("ifgt")) {
+                String register = parts[1];
+                int comparisonValue = Integer.parseInt(parts[2]);
+
+                int registerValue = localRegisters.getOrDefault(register, 0);
+                ifConditionExecute = registerValue > comparisonValue;
+
+                continue;
+            } else if (command.equals("Endif")) {
+                ifConditionExecute = true;
+                continue;
+            }
+
+            if (ifConditionExecute) {
+                resultBuilder.append(processInstruction(instruction, localRegisters)).append("\n");
+            }
         }
 
         AssemblyProgram assemblyProgram = new AssemblyProgram();

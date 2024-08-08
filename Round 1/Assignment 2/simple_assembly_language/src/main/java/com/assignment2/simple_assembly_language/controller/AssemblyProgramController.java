@@ -18,7 +18,7 @@ public class AssemblyProgramController {
     @PostMapping("/execute")
     public ResponseEntity<AssemblyProgram> executeProgram(@RequestBody Map<String, String> request) {
         String programText = request.get("programText");
-        AssemblyProgram assemblyProgram = service.executeAndSave(programText);
+        AssemblyProgram assemblyProgram = service.execute(programText);
         return ResponseEntity.ok(assemblyProgram);
     }
 
